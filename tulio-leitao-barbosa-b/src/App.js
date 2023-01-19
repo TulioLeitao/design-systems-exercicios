@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import {ChakraProvider } from "@chakra-ui/react"
+import { useState } from "react";
+import Cards from "./cards/Cards"
+import axios from "axios" // axios serve para fazer requisição
 
 function App() {
+  
+  const [nome, setNome] = useState ([])
+  console.log (nome)
+
+  const requisicao = () => {
+    const url = "https://swapi.dev/api/people/"
+
+    axios.get(url)
+    .then((res) => {
+      setNome (res.data.results)         
+    })
+    .catch((err) => {
+      console.log (err)
+    })
+
+  
+
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider>
+      {nome.map((mapa) => {
+        return <Cards nome={mapa.name}/>
+      })}
+
+     <button onClick={requisicao}>Oi Edu</button>
+    </ChakraProvider>
+    
   );
 }
 
